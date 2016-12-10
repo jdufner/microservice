@@ -1,5 +1,6 @@
 package de.jdufner.microservice.primes;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.Math.sqrt;
@@ -33,27 +35,7 @@ public class PrimesController {
     return this.discoveryClient.getInstances(applicationName);
   }
 
-  public String primes() {
-    String primzahlen = "";
-    for (int dividend = 2; dividend < 10000; dividend++) {
-      boolean istPrimzahl = true;
-      for (int divisor = 2; divisor < sqrt(dividend); divisor++)  {
-        if (dividend % divisor == 0)  {
-          istPrimzahl = false;
-          break;
-        }
-      }
-      if (istPrimzahl) {
-        if (primzahlen.isEmpty()) {
-          primzahlen = String.valueOf(dividend);
-        } else {
-          primzahlen += ", " + dividend;
-        }
-      }
-    }
-    return primzahlen;
-   }
-
+  @HystrixCommand(fallbackMethod = "primes")
   @RequestMapping(path = "/")
   public List<Integer> primes2() {
     List<Integer> primzahlen = new ArrayList<>();
@@ -86,6 +68,10 @@ public class PrimesController {
     }
     LOG.info("Für die Berechnung von Primzahlen bis {} waren {} Divisionen nötig.", max, divisionCounter);
     return primzahlen;
+  }
+
+  public List<Integer> primes() {
+    return Arrays.asList(2, 3, 5, 7, 9);
   }
 
 }
