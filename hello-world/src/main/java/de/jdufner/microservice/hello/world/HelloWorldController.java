@@ -7,8 +7,11 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by jdufner on 08.12.16.
@@ -17,8 +20,12 @@ import java.util.List;
 @EnableAutoConfiguration
 public class HelloWorldController {
 
+  private final static String PRIMES = "primes";
+
   @Autowired
   private DiscoveryClient discoveryClient;
+
+  private RestTemplate restTemplate = new RestTemplate();
 
   @RequestMapping("/service-instances/{applicationName}")
   public List<ServiceInstance> serviceInstancesByApplicationName(
@@ -28,7 +35,16 @@ public class HelloWorldController {
 
   @RequestMapping(path = "/")
   public String helloWorld() {
-    return "Hello World!";
+    String text = "Hello World!";
+    text = getPrimesSmallerThan(100);
+    return text;
+  }
+
+  private String getPrimesSmallerThan(int limit) {
+    URI uri = discoveryClient.getInstances(PRIMES).get(0).getUri();
+    List<Integer> primes = restTemplate.getForObject(uri, List.class);
+    List<Integer> limitedPrimes = primes.stream().filter(i -> i < limit).collect(Collectors.toList());
+    return limitedPrimes.toString();
   }
 
 }

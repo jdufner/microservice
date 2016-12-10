@@ -1,5 +1,7 @@
 package de.jdufner.microservice.primes;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.ServiceInstance;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.sqrt;
@@ -19,6 +22,8 @@ import static java.lang.Math.sqrt;
 @EnableAutoConfiguration
 public class PrimesController {
 
+  private static final Logger LOG = LoggerFactory.getLogger(PrimesController.class);
+
   @Autowired
   private DiscoveryClient discoveryClient;
 
@@ -28,7 +33,6 @@ public class PrimesController {
     return this.discoveryClient.getInstances(applicationName);
   }
 
-  @RequestMapping(path = "/")
   public String primes() {
     String primzahlen = "";
     for (int dividend = 2; dividend < 10000; dividend++) {
@@ -49,5 +53,39 @@ public class PrimesController {
     }
     return primzahlen;
    }
+
+  @RequestMapping(path = "/")
+  public List<Integer> primes2() {
+    List<Integer> primzahlen = new ArrayList<>();
+    int divisionCounter = 0;
+    int max = 1000000;
+    for(int divisor = 2; divisor < max; divisor++) {
+      boolean istPrimzahl = true;
+      int wurzel = (int) sqrt(divisor);
+      for (int primzahl : primzahlen) {
+        if (primzahl <= wurzel) {
+          divisionCounter++;
+          if (divisor % primzahl == 0) {
+            istPrimzahl = false;
+            break;
+          }
+        } else {
+          break;
+        }
+      }
+//      for (int dividend = 2; dividend <= wurzel; dividend++) {
+//        divisionCounter++;
+//        if (divisor % dividend == 0) {
+//          istPrimzahl = false;
+//          break;
+//        }
+//      }
+      if (istPrimzahl) {
+        primzahlen.add(divisor);
+      }
+    }
+    LOG.info("Für die Berechnung von Primzahlen bis {} waren {} Divisionen nötig.", max, divisionCounter);
+    return primzahlen;
+  }
 
 }
