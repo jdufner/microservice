@@ -1,19 +1,18 @@
-package de.jdufner.microservice.eureka.client;
+package de.jdufner.microservice.monitor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+import org.springframework.cloud.netflix.turbine.EnableTurbine;
 
 @EnableDiscoveryClient
-@EnableCircuitBreaker
 @EnableHystrixDashboard
+@EnableTurbine
 @SpringBootApplication
-public class EurekaClientApplication {
+public class MonitorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EurekaClientApplication.class, args);
+		SpringApplication.run(MonitorApplication.class, args);
 	}
-
 }

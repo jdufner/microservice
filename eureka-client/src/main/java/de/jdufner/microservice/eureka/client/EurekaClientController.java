@@ -1,5 +1,6 @@
 package de.jdufner.microservice.eureka.client;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class EurekaClientController {
   private DiscoveryClient discoveryClient;
 
   @RequestMapping("/service-instances/{applicationName}")
+  @HystrixCommand
   public List<ServiceInstance> serviceInstancesByApplicationName(
       @PathVariable String applicationName) {
     for (String service : discoveryClient.getServices()) {
