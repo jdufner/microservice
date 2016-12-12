@@ -15,18 +15,40 @@
  */
 package de.jdufner.microservice.hello.world;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.List;
 
 /**
  * @author Jürgen Dufner
  * @since 0.0.1
  */
-@SpringBootApplication
-public class HelloWorldApplication {
+public class Greeting {
 
-  public static void main(String[] args) {
-    SpringApplication.run(HelloWorldApplication.class, args);
+  private long id;
+  private String message;
+  private List<Integer> primes;
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(final long id) {
+    this.id = id;
+  }
+
+  public String getMessage() {
+    return message;
+  }
+
+  public void setMessage(final String message) {
+    this.message = message;
+  }
+
+  public List<Integer> getPrimes() {
+    return primes;
+  }
+
+  public void setPrimes(final List<Integer> primes) {
+    this.primes = primes;
   }
 
 }

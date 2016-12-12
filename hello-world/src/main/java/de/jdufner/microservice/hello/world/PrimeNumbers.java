@@ -15,18 +15,22 @@
  */
 package de.jdufner.microservice.hello.world;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.List;
 
 /**
  * @author Jürgen Dufner
  * @since 0.0.1
  */
-@SpringBootApplication
-public class HelloWorldApplication {
+public class PrimeNumbers {
 
-  public static void main(String[] args) {
-    SpringApplication.run(HelloWorldApplication.class, args);
+  private List<Integer> primeNumbers;
+
+  public List<Integer> getPrimeNumbers() {
+    return primeNumbers;
+  }
+
+  public void setPrimeNumbers(final List<Integer> primeNumbers) {
+    this.primeNumbers = primeNumbers;
   }
 
 }

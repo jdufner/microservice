@@ -1,67 +1,57 @@
+/*
+ * Copyright 2016, Jürgen Dufner
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package de.jdufner.microservice.hello.world;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
- * Created by jdufner on 08.12.16.
+ * @author Jürgen Dufner
+ * @since 0.0.1
  */
 @RestController
 @EnableAutoConfiguration
 public class HelloWorldController {
 
-  private final static String PRIMES = "primes";
-
-  @Autowired
-  private DiscoveryClient discoveryClient;
-
-  @Autowired
-  private LoadBalancerClient loadBalancerClient;
-
-  private RestTemplate restTemplate = new RestTemplate();
-
-  @RequestMapping("/service-instances/{applicationName}")
-  public List<ServiceInstance> serviceInstancesByApplicationName(
-      @PathVariable String applicationName) {
-    return this.discoveryClient.getInstances(applicationName);
-  }
+  private final AtomicLong counter = new AtomicLong();
 
   @RequestMapping(path = "/")
-  @HystrixCommand(fallbackMethod = "getPrimesUpTo100")
-  public String helloWorld() {
-    return getPrimesSmallerThan(1000);
+  public Greeting helloWorld(@RequestParam(value = "name", defaultValue = "World") String name) throws Exception {
+    Greeting greeting = new Greeting();
+    greeting.setId(counter.incrementAndGet());
+    greeting.setMessage("Hello " + name + "!");
+    greeting.setPrimes(getPrimesSmallerThan(1000));
+    return greeting;
   }
 
-  private String getPrimesSmallerThan(int limit) {
-    URI uri = getUriBalanced();
-    List<Integer> primes = restTemplate.getForObject(uri, List.class);
-    List<Integer> limitedPrimes = primes.stream().filter(i -> i < limit).collect(Collectors.toList());
-    return limitedPrimes.toString();
+  private List<Integer> getPrimesSmallerThan(int limit) throws Exception {
+    RestTemplate restTemplate = new RestTemplate();
+    URI uri = new URI("http://localhost:9190/");
+    PrimeNumbers primes = restTemplate.getForObject(uri, PrimeNumbers.class);
+    List<Integer> limitedPrimes = primes.getPrimeNumbers().stream().filter(i -> i < limit).collect(Collectors.toList());
+    primes.setPrimeNumbers(limitedPrimes);
+    return limitedPrimes;
   }
 
-  private URI getUri() {
-    return discoveryClient.getInstances(PRIMES).get(0).getUri();
-  }
-
-  private URI getUriBalanced() {
-    return loadBalancerClient.choose(PRIMES).getUri();
-  }
-
-  private String getPrimesUpTo100() {
-    List primes = Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97);
-    return primes.toString();
-  }
 }

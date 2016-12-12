@@ -13,20 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.jdufner.microservice.hello.world;
+package de.jdufner.microservice.primes;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.List;
 
 /**
  * @author Jürgen Dufner
  * @since 0.0.1
  */
-@SpringBootApplication
-public class HelloWorldApplication {
+public class PrimesResult {
 
-  public static void main(String[] args) {
-    SpringApplication.run(HelloWorldApplication.class, args);
+  private long id;
+  private List<Integer> primeNumbers;
+  private Long divisionCounter;
+
+  public long getId() {
+    return id;
   }
 
+  public void setId(final long id) {
+    this.id = id;
+  }
+
+  public List<Integer> getPrimeNumbers() {
+    return primeNumbers;
+  }
+
+  public void setPrimeNumbers(final List<Integer> primeNumbers) {
+    this.primeNumbers = primeNumbers;
+  }
+
+  public Long getDivisionCounter() {
+    return divisionCounter;
+  }
+
+  public void setDivisionCounter(final Long divisionCounter) {
+    this.divisionCounter = divisionCounter;
+  }
 }
