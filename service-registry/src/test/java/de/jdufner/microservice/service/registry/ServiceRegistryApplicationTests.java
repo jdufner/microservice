@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.jdufner.microservice.hello.world;
+package de.jdufner.microservice.service.registry;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author Jürgen Dufner
  * @since 0.0.1
  */
-@EnableDiscoveryClient
-@SpringBootApplication
-public class HelloWorldApplication {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ServiceRegistryApplicationTests {
 
-  public static void main(String[] args) {
-    SpringApplication.run(HelloWorldApplication.class, args);
+  @Test
+  public void contextLoads() {
   }
 
 }

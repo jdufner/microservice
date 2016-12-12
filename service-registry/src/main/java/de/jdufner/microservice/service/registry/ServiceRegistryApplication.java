@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.jdufner.microservice.hello.world;
+package de.jdufner.microservice.service.registry;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
  * @author Jürgen Dufner
  * @since 0.0.1
  */
-@EnableDiscoveryClient
+@EnableEurekaServer
 @SpringBootApplication
-public class HelloWorldApplication {
+public class ServiceRegistryApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(HelloWorldApplication.class, args);
+    SpringApplication.run(ServiceRegistryApplication.class, args);
   }
 
 }

@@ -15,7 +15,9 @@
  */
 package de.jdufner.microservice.hello.world;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +39,12 @@ import java.util.stream.Collectors;
 public class HelloWorldController {
 
   private final AtomicLong counter = new AtomicLong();
+  
+  @Autowired
+  private DiscoveryClient discoveryClient;
+
+  private RestTemplate restTemplate = new RestTemplate();
+  private String PRIMES = "primes";
 
   @RequestMapping(path = "/")
   public Greeting helloWorld(@RequestParam(value = "name", defaultValue = "World") String name) throws Exception {
@@ -49,8 +57,7 @@ public class HelloWorldController {
   }
 
   private List<Integer> getPrimesSmallerThan(int limit) throws Exception {
-    RestTemplate restTemplate = new RestTemplate();
-    URI uri = new URI("http://localhost:9190/");
+    URI uri = discoveryClient.getInstances(PRIMES).get(0).getUri();
     PrimeNumbers primes = restTemplate.getForObject(uri, PrimeNumbers.class);
     List<Integer> limitedPrimes = primes.getPrimeNumbers().stream().filter(i -> i < limit).collect(Collectors.toList());
     primes.setPrimeNumbers(limitedPrimes);
