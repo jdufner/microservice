@@ -12,6 +12,9 @@ Die hier implementierten Microservies sind
 1. [Hello-World](./hello-world) - Ein klassischer "Hello World!"-Service.
 2. [Primes](./primes) - Ein Service der Primzahlen berechnet.
 
+Beide Service verfügen über einen Health-Endpoint um über den aktuellen Zustand 
+Auskunft zu geben.
+
 ## Ausführung der Demo
 
 Die Services können am einfachsten mittels einer IDE gestartet werden oder als 
@@ -21,3 +24,4 @@ ausführbare JAR-Datei gepackt und ausgeführt werden.
 
 1. [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
 2. [Consuming a RESTful Web Service](https://spring.io/guides/gs/consuming-rest/)
+3. [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)

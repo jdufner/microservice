@@ -36,3 +36,27 @@ Liefert ein JSON-Objekt der Art:
   "primes": [2, 3, 5, ... 997]
 }
 ````
+
+## Actuator
+
+Spring Boot liefert sog. Actuators mit. Wir aktivieren die Actuators, weil sie
+von die Netflix-Services für die Überwachung benötigt werden. Der für uns 
+wichtigste Actuator ist der Health-Endpoint. Er ist unter `/health` erreichbar.
+
+````
+curl localhost:9090/health | json_pp
+````
+
+liefert etwas in der Art
+
+````
+{
+    "status": "UP",
+    "diskSpace": {
+        "status": "UP",
+        "total": 511397851136,
+        "free": 200806346752,
+        "threshold": 10485760
+    }
+}
+````

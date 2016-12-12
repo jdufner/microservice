@@ -26,6 +26,7 @@ public class Greeting {
   private long id;
   private String message;
   private List<Integer> primes;
+  private String hostname;
 
   public long getId() {
     return id;
@@ -51,4 +52,11 @@ public class Greeting {
     this.primes = primes;
   }
 
+  public void setHostname(final String hostname) {
+    this.hostname = hostname;
+  }
+
+  public String getHostname() {
+    return hostname;
+  }
 }

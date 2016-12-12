@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -45,7 +47,16 @@ public class PrimesController {
   public PrimesResult primes(@RequestParam(value = "maxPrimeNumber", defaultValue = "1000000") int maxPrimeNumber) {
     PrimesResult primesResult = primesComputerObjectFactory.getObject().primes(maxPrimeNumber);
     primesResult.setId(counter.incrementAndGet());
+    primesResult.setHostname(getHostname());
     return primesResult;
+  }
+
+  private String getHostname() {
+    try {
+      return InetAddress.getLocalHost().getHostName();
+    } catch (UnknownHostException e) {
+      throw new RuntimeException(e);
+    }
   }
 
 }

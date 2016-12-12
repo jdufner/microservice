@@ -26,6 +26,7 @@ public class PrimesResult {
   private long id;
   private List<Integer> primeNumbers;
   private Long divisionCounter;
+  private String hostname;
 
   public long getId() {
     return id;
@@ -49,5 +50,13 @@ public class PrimesResult {
 
   public void setDivisionCounter(final Long divisionCounter) {
     this.divisionCounter = divisionCounter;
+  }
+
+  public void setHostname(final String hostname) {
+    this.hostname = hostname;
+  }
+
+  public String getHostname() {
+    return hostname;
   }
 }
