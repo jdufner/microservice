@@ -17,12 +17,14 @@ package de.jdufner.microservice.hello.world;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author Jürgen Dufner
  * @since 0.0.1
  */
+@EnableCircuitBreaker
 @EnableDiscoveryClient
 @SpringBootApplication
 public class HelloWorldApplication {

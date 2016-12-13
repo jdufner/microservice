@@ -15,6 +15,7 @@
  */
 package de.jdufner.microservice.hello.world;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -26,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -47,11 +49,20 @@ public class HelloWorldController {
   private String PRIMES = "primes";
 
   @RequestMapping(path = "/")
+  @HystrixCommand(fallbackMethod = "helloWorldFallback")
   public Greeting helloWorld(@RequestParam(value = "name", defaultValue = "World") String name) throws Exception {
+    return doHelloWorld(name, getPrimesSmallerThan(1000));
+  }
+
+  public Greeting helloWorldFallback(String name) {
+    return doHelloWorld(name, getPrimesUpTo100());
+  }
+
+  public Greeting doHelloWorld(String name, final List<Integer> primes) {
     Greeting greeting = new Greeting();
     greeting.setId(counter.incrementAndGet());
     greeting.setMessage("Hello " + name + "!");
-    greeting.setPrimes(getPrimesSmallerThan(1000));
+    greeting.setPrimes(primes);
     greeting.setHostname(getHostname());
     return greeting;
   }
@@ -62,6 +73,10 @@ public class HelloWorldController {
     List<Integer> limitedPrimes = primes.getPrimeNumbers().stream().filter(i -> i < limit).collect(Collectors.toList());
     primes.setPrimeNumbers(limitedPrimes);
     return limitedPrimes;
+  }
+
+  private List<Integer> getPrimesUpTo100() {
+    return Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97);
   }
 
   private String getHostname() {

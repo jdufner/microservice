@@ -32,6 +32,7 @@ ausführbare JAR-Datei gepackt und ausgeführt werden.
 3. [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
 4. [Service Registration and Discovery](https://spring.io/guides/gs/service-registration-and-discovery/)
 5. [Client Side Load Balancing with Ribbon and Spring Cloud](https://spring.io/guides/gs/client-side-load-balancing/)
+6. [Circuit Breaker](https://spring.io/guides/gs/circuit-breaker/)
 
 ### Dokumentationen
 1. [Spring Framework Reference Documentation](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/) [(single page)](https://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/)
