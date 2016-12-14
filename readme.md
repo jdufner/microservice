@@ -15,6 +15,8 @@ Die hier implementierten Microservices sind
 Neben den fachlichen Services werden Infrastrukturservices benötigt: 
 
 1. [Service-Registry](./service-registry) - Ein Service-Registry und -Discovery.
+2. [Monitoring-Application](./monitor) - Ein Dashboard zur Überwachung und 
+   Aggration von Hystrix-Stream.
 
 Beide Service verfügen über einen Health-Endpoint um über den aktuellen Zustand 
 Auskunft zu geben.
