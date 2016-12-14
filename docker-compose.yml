@@ -1,0 +1,31 @@
+version: "2"
+services:
+  service-registry:
+    build: service-registry/
+    ports:
+      - "8761:8761"
+  gateway:
+    build: gateway/
+    ports:
+      - "8080:8080"
+    links:
+      - service-registry
+  monitor:
+    build: monitor/
+    ports:
+      - "8180:8080"
+    links:
+      - service-registry
+  hello-world:
+    build: hello-world/
+    ports:
+      - "9090:8080"
+    links:
+      - service-registry
+  primes:
+    build: primes/
+    ports:
+      - "9190:8080"
+    links:
+      - service-registry
+

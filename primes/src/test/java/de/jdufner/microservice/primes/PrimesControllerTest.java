@@ -15,18 +15,38 @@
  */
 package de.jdufner.microservice.primes;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.ObjectFactory;
 
 /**
  * @author Jürgen Dufner
  * @since 0.0.1
  */
+@RunWith(MockitoJUnitRunner.class)
 public class PrimesControllerTest {
+
+  @InjectMocks
+  private PrimesController primesController;
+
+  @Mock
+  private ObjectFactory<PrimesComputer> primesComputerObjectFactory;
 
   @Test
   public void testPrimes() {
-    PrimesController pc = new PrimesController();
-    System.out.println(pc.primes(100));
+    // arrange
+    Mockito.when(primesComputerObjectFactory.getObject()).thenReturn(new PrimesComputer());
+
+    // act
+    PrimesResult primesResult = primesController.primes(100);
+
+    // assert
+    Assertions.assertThat(primesResult.getDivisionCounter()).isEqualTo(235);
   }
 
 }
