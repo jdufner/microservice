@@ -17,6 +17,8 @@ Neben den fachlichen Services werden Infrastrukturservices benötigt:
 1. [Service-Registry](./service-registry) - Ein Service-Registry und -Discovery.
 2. [Monitoring-Application](./monitor) - Ein Dashboard zur Überwachung und 
    Aggration von Hystrix-Stream.
+3. [Service-Gateway](./gateway) - Ein Service-Gateway zur Weiterleitung und 
+   Filterung der Serviceaufrufe (Reverse-Proxy).
 
 Beide Service verfügen über einen Health-Endpoint um über den aktuellen Zustand 
 Auskunft zu geben.
@@ -35,6 +37,7 @@ ausführbare JAR-Datei gepackt und ausgeführt werden.
 4. [Service Registration and Discovery](https://spring.io/guides/gs/service-registration-and-discovery/)
 5. [Client Side Load Balancing with Ribbon and Spring Cloud](https://spring.io/guides/gs/client-side-load-balancing/)
 6. [Circuit Breaker](https://spring.io/guides/gs/circuit-breaker/)
+7. [Routing and Filtering](https://spring.io/guides/gs/routing-and-filtering/)
 
 ### Dokumentationen
 1. [Spring Framework Reference Documentation](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/) [(single page)](https://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/)
