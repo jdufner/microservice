@@ -94,3 +94,10 @@ oder
 ````
 java -jar -Dspring.profiles.active=docker hello-world-0.0.1-SNAPSHOT.jar
 ````
+
+
+# Todo
+* Ab 10_Docker_Images_skaliert funktioniert der Absprung aus Eureka nicht mehr.
+  Eureka lenkt auf die IP-Adresse:Serverport um. Leider ist der Port nicht in
+  Docker freigegeben. Wünschenswert wäre, dass der Zugriff via Zuul
+  funktioniert.

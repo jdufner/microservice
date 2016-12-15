@@ -41,6 +41,9 @@ sudo docker images -a | grep "^<none>" | awk "{print \$3}" | xargs sudo docker r
 sudo docker rmi microserviceeureka_primes microserviceeureka_hello-world microserviceeureka_monitor microserviceeureka_gateway microserviceeureka_service-registry
 ````
 
+Docker-Images können bspw. mittels `docker-compose scale primes=2` skaliert 
+werden.
+
 ## Referenzen
 
 ### Spring Getting Started

@@ -18,14 +18,10 @@ services:
       - service-registry
   hello-world:
     build: hello-world/
-    ports:
-      - "9090:8080"
     links:
       - service-registry
   primes:
     build: primes/
-    ports:
-      - "9190:8080"
     links:
       - service-registry
 
