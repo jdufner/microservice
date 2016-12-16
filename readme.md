@@ -38,11 +38,25 @@ Annahme: Es sind keine Docker-Images mit den Services gebaut.
 ````
 sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
 sudo docker images -a | grep "^<none>" | awk "{print \$3}" | xargs sudo docker rmi -f
-sudo docker rmi microserviceeureka_primes microserviceeureka_hello-world microserviceeureka_monitor microserviceeureka_gateway microserviceeureka_service-registry
+sudo docker rmi microserviceeureka_primes microserviceeureka_hello-world microserviceeureka_monitor microserviceeureka_gateway microserviceeureka_service-registry microserviceeureka_logstash microserviceeureka_elasticsearch microserviceeureka_kibana
 ````
 
 Docker-Images können bspw. mittels `docker-compose scale primes=2` skaliert 
 werden.
+
+Der ELK-Stack kann unter der URL `localhost:5601` aufgerufen werden.
+
+## Konfiguration für Elasticsearch
+
+https://www.elastic.co/guide/en/elasticsearch/guide/current/_file_descriptors_and_mmap.html
+
+Elasticsearch also uses a mix of NioFS and MMapFS for the various files. Ensure that you configure the maximum map count so that there is ample virtual memory available for mmapped files. This can be set temporarily:
+
+````
+sysctl -w vm.max_map_count=262144
+````
+
+Or you can set it permanently by modifying vm.max_map_count setting in your /etc/sysctl.conf.
 
 ## Referenzen
 
