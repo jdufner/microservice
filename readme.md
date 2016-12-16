@@ -38,11 +38,47 @@ Annahme: Es sind keine Docker-Images mit den Services gebaut.
 ````
 sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
 sudo docker images -a | grep "^<none>" | awk "{print \$3}" | xargs sudo docker rmi -f
-sudo docker rmi microserviceeureka_primes microserviceeureka_hello-world microserviceeureka_monitor microserviceeureka_gateway microserviceeureka_service-registry
+sudo docker rmi microserviceeureka_primes microserviceeureka_hello-world microserviceeureka_monitor microserviceeureka_gateway microserviceeureka_service-registry microserviceeureka_logstash microserviceeureka_elasticsearch microserviceeureka_kibana
 ````
 
 Docker-Images können bspw. mittels `docker-compose scale primes=2` skaliert 
 werden.
+
+Der ELK-Stack kann unter der URL `localhost:5601` aufgerufen werden.
+
+## ELK-Stack
+
+Der ELK-Stack ist ein Quasi-Standard zur Behandlung von Log-Informationen. ELK
+steht für E = [Elasticsearch](https://www.elastic.co/de/products/elasticsearch),
+L = [Logstash](https://www.elastic.co/products/logstash) und K = 
+[Kibana](https://www.elastic.co/de/products/kibana). Elasticsearch ist eine 
+Volltextsuche, Logstash ist ein Filter- und Transformationspipeline und Kibana
+ist eine Daten-Visualisierung.
+
+Die Konfiguration des ELK-Stack ist ein wenig knifflig und leider nur auf 
+wenigen Seiten (siehe Referenzen) übersichtlich dargestellt. Meine 
+Konfiguration hier basiert auf den offiziellen Docker-Images. Die Konfiguration
+erfolgt in angepassten Dockerfiles.
+
+### Konfiguration für Elasticsearch
+
+Elasticsearch ist sehr ressourcenhungrig. Daher muss noch folgende 
+Konfiguration durchgeführt werden.
+
+https://www.elastic.co/guide/en/elasticsearch/guide/current/_file_descriptors_and_mmap.html
+
+Elasticsearch also uses a mix of NioFS and MMapFS for the various files. Ensure 
+that you configure the maximum map count so that there is ample virtual memory 
+available for mmapped files. This can be set temporarily:
+
+````
+sysctl -w vm.max_map_count=262144
+````
+
+Or you can set it permanently by modifying `vm.max_map_count` setting in your 
+`/etc/sysctl.conf`.
+
+
 
 ## Referenzen
 
@@ -66,3 +102,8 @@ werden.
 1. [Dockerfile reference](https://docs.docker.com/engine/reference/builder/)
 2. [Best practices for writing Dockerfiles](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/)
 3. [Compose file reference](https://docs.docker.com/compose/compose-file/)
+
+### ELK-Stack
+1. [Docker ELK stack](https://github.com/deviantony/docker-elk)
+2. [Building an ELK stack with docker-compose](http://blog.kopis.de/2016/01/26/building-an-elk-stack-with-docker-compose/)
+3. [Manage Spring Boot Logs with Elasticsearch, Logstash and Kibana](http://knes1.github.io/blog/2015/2015-08-16-manage-spring-boot-logs-with-elasticsearch-kibana-and-logstash.html)
