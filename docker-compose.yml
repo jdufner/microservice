@@ -1,36 +1,30 @@
 version: "2"
+
 services:
-  service-registry:
-    build: service-registry/
+  elasticsearch:
+    build: elasticsearch/
+    environment:
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
     ports:
-      - "8761:8761"
-    volumes:
-      - /opt/log/service-registry:/log
-  gateway:
-    build: gateway/
+      - "9200:9200"
+      - "9300:9300"
+  logstash:
+    build: logstash/
+    command: "-f /etc/logstash/conf.d/"
+    environment:
+      - LS_HEAP_SIZE=500m
+    links:
+      - elasticsearch
     ports:
-      - "8080:8080"
-    links:
-      - service-registry
+      - "5000:5000"
     volumes:
-      - /opt/log/gateway:/log
-  monitor:
-    build: monitor/
+      - "./logstash/config:/etc/logstash/conf.d"
+      - "/opt/log:/log"
+  kibana:
+    build: kibana/
+    links:
+      - elasticsearch
     ports:
-      - "8180:8080"
-    links:
-      - service-registry
+      - "5601:5601"
     volumes:
-      - /opt/log/monitor:/log
-  hello-world:
-    build: hello-world/
-    links:
-      - service-registry
-    volumes:
-      - /opt/log/hello-world:/log
-  primes:
-    build: primes/
-    links:
-      - service-registry
-    volumes:
-      - /opt/log/primes:/log
+      - "./kibana/config/:/etc/kibana"
