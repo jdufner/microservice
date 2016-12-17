@@ -4,24 +4,33 @@ services:
     build: service-registry/
     ports:
       - "8761:8761"
+    volumes:
+      - /opt/log/service-registry:/log
   gateway:
     build: gateway/
     ports:
       - "8080:8080"
     links:
       - service-registry
+    volumes:
+      - /opt/log/gateway:/log
   monitor:
     build: monitor/
     ports:
       - "8180:8080"
     links:
       - service-registry
+    volumes:
+      - /opt/log/monitor:/log
   hello-world:
     build: hello-world/
     links:
       - service-registry
+    volumes:
+      - /opt/log/hello-world:/log
   primes:
     build: primes/
     links:
       - service-registry
-
+    volumes:
+      - /opt/log/primes:/log
