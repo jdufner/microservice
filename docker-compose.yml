@@ -19,7 +19,7 @@ services:
       - "5000:5000"
     volumes:
       - "./logstash/config:/etc/logstash/conf.d"
-      - "/opt/log:/log"
+      - "/tmp/log:/log"
   kibana:
     build: kibana/
     links:
