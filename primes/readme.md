@@ -9,7 +9,7 @@ mit einer ID, und den Primzahlen unter einer Million zurück:
 ## Implementierung
 
 Die Implementierung es Primzahlen-Algorithmus ist ein einfacher 
-[Primzahltest] (https://de.wikipedia.org/wiki/Primzahltest). Im Moment sind 
+[Primzahltest](https://de.wikipedia.org/wiki/Primzahltest). Im Moment sind 
 zwei Varianten implementiert:
 
 1. Die erste Variante iteriert über alle Ganzzahlen kleiner der Quadratwurzel
