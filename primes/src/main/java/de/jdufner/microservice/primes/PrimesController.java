@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.List;
 
 /**
  * @author Jürgen Dufner
@@ -41,13 +43,16 @@ public class PrimesController {
 
   private final AtomicLong counter = new AtomicLong();
   
+  @Value("${primes.strategy}")
+  private String strategy;
+
   @Autowired
-  private ObjectFactory<PrimesComputer> primesComputerObjectFactory;
+  private ObjectFactory<List<AbstractPrimesComputer>> primesComputerObjectFactories;
 
   @HystrixCommand
   @RequestMapping(path = "/")
   public PrimesResult primes(@RequestParam(value = "maxPrimeNumber", defaultValue = "1000000") int maxPrimeNumber) {
-    PrimesResult primesResult = primesComputerObjectFactory.getObject().primes(maxPrimeNumber);
+    PrimesResult primesResult = getPrimesComputerByStrategy().primes(maxPrimeNumber);
     primesResult.setId(counter.incrementAndGet());
     primesResult.setHostname(getHostname());
     return primesResult;
@@ -59,6 +64,15 @@ public class PrimesController {
     } catch (UnknownHostException e) {
       throw new RuntimeException(e);
     }
+  }
+  
+  private AbstractPrimesComputer getPrimesComputerByStrategy() {
+    for (AbstractPrimesComputer primesComputer : primesComputerObjectFactories.getObject()) {
+      if (primesComputer.getClass().getSimpleName().equals(strategy)) {
+        return primesComputer;
+      }
+    }
+    return null;
   }
 
 }
