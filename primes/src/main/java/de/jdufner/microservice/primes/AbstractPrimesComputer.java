@@ -17,8 +17,6 @@ package de.jdufner.microservice.primes;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +27,17 @@ import static java.lang.Math.sqrt;
  * @author Jürgen Dufner
  * @since 0.0.1
  */
-@Component
-@Scope("prototype")
-public class PrimesComputer {
+public abstract class AbstractPrimesComputer {
 
-  private static final Logger LOG = LoggerFactory.getLogger(PrimesComputer.class);
+  private static final Logger LOG = LoggerFactory.getLogger(AbstractPrimesComputer.class);
 
-  private final PrimesResult primesResult = new PrimesResult();
-  private final List<Integer> primeNumbers = new ArrayList<>();
-  private long divisionCounter = 0;
+  protected final PrimesResult primesResult = new PrimesResult();
+  protected final List<Integer> primeNumbers = new ArrayList<>();
+  protected long divisionCounter = 0;
+
+  protected boolean isDivider(final int divisor, final int dividend) {
+    return divisor % dividend == 0;
+  }
 
   public PrimesResult primes(int maxPrimeNumber) {
     computePrimeNumbers(maxPrimeNumber);
@@ -58,36 +58,9 @@ public class PrimesComputer {
 
   private boolean isPrimeNumber(final int primeNumberCandidate) {
     int sqrt = (int) sqrt(primeNumberCandidate);
-    //return checkPrimeNumbersOnly(primeNumberCandidate, sqrt);
-    return checkAllNumbers(primeNumberCandidate, sqrt);
+    return checkPrimeNumberCandidate(primeNumberCandidate, sqrt);
   }
 
-  private boolean checkPrimeNumbersOnly(final int divisor, final int sqrt) {
-    for (int primeNumber : primeNumbers) {
-      if (primeNumber <= sqrt) {
-        divisionCounter++;
-        if (isDivider(divisor, primeNumber)) {
-          return false;
-        }
-      } else {
-        return true;
-      }
-    }
-    return true;
-  }
-
-  private boolean checkAllNumbers(final int divisor, final int sqrt) {
-    for (int dividend = 2; dividend <= sqrt; dividend++) {
-      divisionCounter++;
-      if (isDivider(divisor, dividend)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  private boolean isDivider(final int divisor, final int dividend) {
-    return divisor % dividend == 0;
-  }
+  protected abstract boolean checkPrimeNumberCandidate(final int primeNumberCandidate, final int sqrt);
 
 }
