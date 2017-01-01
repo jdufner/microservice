@@ -6,13 +6,13 @@ Dieser Service liefert beim Aufruf auf Contextroot "/" ein JSON-Objekt zurück
 mit einer ID, einem String "Hello World!" und eine Liste der Primzahlen unter 
 1.000 zurück. Der Service ist damit zur Laufzeit abhängig vom Service 
 [primes](../primes). Wenn der Service nicht verfügbar ist, dann wird eine 
-Fehlermeldung geliefert. 
+Fehlermeldung geliefert.
 
 ## Implementierung
 
 Der Aufruf des Primes-Services erfolgt mittels JSON. Das Objekt zum 
 deserialisieren ist in diesem Projekt implementiert, weil keine binäre 
-Abhängigkeit zum Projekt primes erwünscht ist. 
+Abhängigkeit zum Projekt primes erwünscht ist.
 
 ## Test
 
