@@ -25,6 +25,18 @@ Auskunft zu geben.
 
 ## Ausführung der Demo
 
+### Maven
+
+Voraussetzung: Der User, der den Maven-Build ausführt, muss `docker` ausführen
+können. Dazu muss der User Mitglied der Gruppe docker sein: 
+`sudo usermod -aG docker $USER`, ggf. muss sich der User danach noch aus- und
+einloggen.
+
+Mit `mvn package docker:build` kann das Image gebaut werden. Das Image ist nun
+als lokales Image verfügbar. Das kann mit `docker images -a` überprüft werden. 
+
+### Docker
+
 Die Services können nun nicht mehr aus der IDE gestaret werden, sondern müssen
 in einem Docker-Container gestartet werden. Dazu sind folgende Schritte nötig:
 
@@ -102,6 +114,7 @@ Or you can set it permanently by modifying `vm.max_map_count` setting in your
 1. [Dockerfile reference](https://docs.docker.com/engine/reference/builder/)
 2. [Best practices for writing Dockerfiles](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/)
 3. [Compose file reference](https://docs.docker.com/compose/compose-file/)
+4. [A maven plugin for Docker ](https://github.com/spotify/docker-maven-plugin)
 
 ### ELK-Stack
 1. [Docker ELK stack](https://github.com/deviantony/docker-elk)
