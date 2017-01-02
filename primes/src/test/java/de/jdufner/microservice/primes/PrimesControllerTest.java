@@ -15,18 +15,47 @@
  */
 package de.jdufner.microservice.primes;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author Jürgen Dufner
  * @since 0.0.1
  */
+@RunWith(MockitoJUnitRunner.class)
 public class PrimesControllerTest {
+
+  @InjectMocks
+  private PrimesController primesController;
+
+  @Mock
+  private ObjectFactory<List<AbstractPrimesComputer>> primesComputerObjectFactories;
 
   @Test
   public void testPrimes() {
-    PrimesController pc = new PrimesController();
-    System.out.println(pc.primes(100));
+    // arrange
+    List<AbstractPrimesComputer> primesComputers = new ArrayList<>();
+    PrimesOnlyPrimesComputer primesOnlyPrimesComputer = new PrimesOnlyPrimesComputer();
+    primesComputers.add(primesOnlyPrimesComputer);
+    Mockito.when(primesComputerObjectFactories.getObject()).thenReturn(primesComputers);
+    ReflectionTestUtils.setField(primesController, "strategy", primesOnlyPrimesComputer.getClass().getSimpleName());
+
+    // act
+    PrimesResult primesResult = primesController.primes(100);
+
+    // assert
+    Assertions.assertThat(primesResult).isNotNull();
   }
 
 }
