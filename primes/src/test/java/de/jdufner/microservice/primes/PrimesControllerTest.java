@@ -23,6 +23,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author Jürgen Dufner
@@ -35,18 +40,22 @@ public class PrimesControllerTest {
   private PrimesController primesController;
 
   @Mock
-  private ObjectFactory<PrimesComputer> primesComputerObjectFactory;
+  private ObjectFactory<List<AbstractPrimesComputer>> primesComputerObjectFactories;
 
   @Test
   public void testPrimes() {
     // arrange
-    Mockito.when(primesComputerObjectFactory.getObject()).thenReturn(new PrimesComputer());
+    List<AbstractPrimesComputer> primesComputers = new ArrayList<>();
+    PrimesOnlyPrimesComputer primesOnlyPrimesComputer = new PrimesOnlyPrimesComputer();
+    primesComputers.add(primesOnlyPrimesComputer);
+    Mockito.when(primesComputerObjectFactories.getObject()).thenReturn(primesComputers);
+    ReflectionTestUtils.setField(primesController, "strategy", primesOnlyPrimesComputer.getClass().getSimpleName());
 
     // act
     PrimesResult primesResult = primesController.primes(100);
 
     // assert
-    Assertions.assertThat(primesResult.getDivisionCounter()).isEqualTo(235);
+    Assertions.assertThat(primesResult).isNotNull();
   }
 
 }
