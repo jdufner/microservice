@@ -19,6 +19,7 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Jürgen Dufner
  * @since 0.0.1
  */
+@Component
 public class SimpleFilter extends ZuulFilter {
 
   private static final Logger LOG = LoggerFactory.getLogger(SimpleFilter.class);

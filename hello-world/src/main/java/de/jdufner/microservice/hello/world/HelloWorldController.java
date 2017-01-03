@@ -16,6 +16,8 @@
 package de.jdufner.microservice.hello.world;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -40,12 +42,16 @@ import java.util.stream.Collectors;
 @EnableAutoConfiguration
 public class HelloWorldController {
 
+  private static final Logger LOG = LoggerFactory.getLogger(HelloWorldController.class);
+
   private final AtomicLong counter = new AtomicLong();
   
   @Autowired
   private LoadBalancerClient loadBalancerClient;
 
-  private RestTemplate restTemplate = new RestTemplate();
+  @Autowired
+  private RestTemplate restTemplate;
+
   private String PRIMES = "primes";
 
   @RequestMapping(path = "/")
@@ -55,6 +61,7 @@ public class HelloWorldController {
   }
 
   public Greeting helloWorldFallback(String name) {
+    LOG.warn("Using fallback!");
     return doHelloWorld(name, getPrimesUpTo100());
   }
 
@@ -69,6 +76,7 @@ public class HelloWorldController {
 
   private List<Integer> getPrimesSmallerThan(int limit) throws Exception {
     URI uri = loadBalancerClient.choose(PRIMES).getUri();
+    LOG.info("Getting Primes smaller than {}", limit);
     PrimeNumbers primes = restTemplate.getForObject(uri, PrimeNumbers.class);
     List<Integer> limitedPrimes = primes.getPrimeNumbers().stream().filter(i -> i < limit).collect(Collectors.toList());
     primes.setPrimeNumbers(limitedPrimes);
