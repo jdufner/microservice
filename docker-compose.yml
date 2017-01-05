@@ -5,16 +5,11 @@ services:
     build: elasticsearch/
     environment:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
-    ports:
-      - "9200:9200"
-      - "9300:9300"
   logstash:
     build: logstash/
     command: "-f /etc/logstash/conf.d/"
     environment:
       - LS_HEAP_SIZE=500m
-    ports:
-      - "5000:5000"
     links:
       - elasticsearch
     volumes:
@@ -30,8 +25,6 @@ services:
       - "./kibana/config/:/etc/kibana"
   service-registry:
     build: service-registry/
-    ports:
-      - "8761:8761"
     links:
       - elasticsearch
     volumes:
