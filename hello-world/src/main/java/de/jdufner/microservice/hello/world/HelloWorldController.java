@@ -55,8 +55,8 @@ public class HelloWorldController {
   private RestTemplate restTemplate = new RestTemplate();
   private String PRIMES = "primes";
 
-  @Value("${name}")
-  private String configurationValue = "Wrong Value";
+  @Value("${arbitrary.configuration.value}")
+  private String configurationValue = "Hardcoded Value";
 
   @RequestMapping(path = "/")
   @HystrixCommand(fallbackMethod = "helloWorldFallback")
