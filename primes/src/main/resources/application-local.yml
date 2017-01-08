@@ -1,0 +1,20 @@
+# Profil local (localhost)
+
+# Wir wollen mehrere Services gleichzeitig laufen lassen. Das geht nur, wenn
+# sie auf unterschiedlichen Ports lauschen. Wir starteten mit 9090, jeder
+# weitere Business-Microservice wird einfach um 100 erhöht, hier also 9190
+server:
+  port: 9190
+
+service-registry:
+  server:
+    hostname: localhost
+
+# Ususal Spring Boot Configuration
+#debug: true
+
+# IntelliJ support ANSI-Colors
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS

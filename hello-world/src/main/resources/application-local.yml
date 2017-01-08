@@ -6,9 +6,3 @@
 server.port=9090
 
 service-registry.server.hostname=localhost
-
-# Ususal Spring Boot Configuration
-#debug=true
-
-# IntelliJ support ANSI-Colors
-spring.output.ansi.enabled=ALWAYS

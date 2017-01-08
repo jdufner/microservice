@@ -69,7 +69,8 @@ sudo docker rmi microserviceeureka_primes microserviceeureka_hello-world microse
 1. [Spring Framework Reference Documentation](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/) [(single page)](https://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/)
 2. [Spring Boot Reference Guide](https://docs.spring.io/spring-boot/docs/current/reference/html/) [(single page)](https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/)
 3. [Spring Cloud](http://projects.spring.io/spring-cloud/spring-cloud.html)
-4. [Spring CLoud Netflix](http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html)
+4. [Spring Cloud Netflix](http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html)
+5. [Spring Cloud Config](https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html)
 
 ### Docker
 1. [Dockerfile reference](https://docs.docker.com/engine/reference/builder/)
