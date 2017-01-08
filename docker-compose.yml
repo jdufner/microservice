@@ -16,6 +16,12 @@ services:
       - "8180:8080"
     links:
       - service-registry
+  monitor:
+    build: configuration/
+    ports:
+      - "8280:8080"
+    links:
+      - service-registry
   hello-world:
     build: hello-world/
     ports:
