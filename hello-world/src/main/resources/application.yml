@@ -35,3 +35,7 @@ hello-world:
 arbitrary:
   configuration:
     value: Value from general Hello-World configuration without profile
+
+x:
+  y:
+    z: x

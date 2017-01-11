@@ -58,6 +58,9 @@ public class HelloWorldController {
   @Value("${arbitrary.configuration.value}")
   private String configurationValue = "Hardcoded Value";
 
+  @Value("${x.y.z}")
+  private String yast;
+
   @RequestMapping(path = "/")
   @HystrixCommand(fallbackMethod = "helloWorldFallback")
   public Greeting helloWorld(@RequestParam(value = "name", defaultValue = "World") String name) throws Exception {
@@ -75,7 +78,7 @@ public class HelloWorldController {
     greeting.setMessage("Hello " + name + "!");
     greeting.setPrimes(primes);
     greeting.setHostname(getHostname());
-    greeting.setConfigurationValue(configurationValue);
+    greeting.setConfigurationValue(configurationValue + " " + yast);
     return greeting;
   }
 
