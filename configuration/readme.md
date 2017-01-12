@@ -8,10 +8,41 @@ Konfiguration über ein lokales Git-Repository verwaltet.
 
 ## Implementierung
 
+### Git-Server
+
+Voraussetzung: Für die Konfiguration wird ein git-Repository benötigt. Das 
+kann bspw. Github sein oder ein unternehmensweites Repository oder ein git-
+Server, der ebenfalls über Docker-Image betrieben wird. Im vorliegenden Fall
+zeige ich das am Beispiel des Docker-Images [git-ssh-server](https://github.com/unixtastic/git-ssh-server).
+Ein vergleichbares Docker-Image ist [git-server-docker](https://github.com/jkarlosb/git-server-docker).
+In beiden Fällen wird ein einfaches Docker-Image gestartet, das einen SSH-
+Service bereitstellt, über den man auf die Repositories zugreifen kann. Der
+Zugriff wird durch Einfügen eines SSH-Keys in authorized-keys gewährt. Neue 
+Repositories können einfach über `git init --bare` einem entsprechenden 
+Verzeichnis angelegt werden. 
+
+Einschränkung: In dieser Lösung kann nur über ein genereller 
+Zugriff auf alle git-Repositories eingerichtet werden. Ein feingranulare 
+Zugriffsteuerung auf einzelne Repositories oder gar einzelne Branches ist damit
+_nicht_ möglich. Dazu wird eine größere Lösung wie bspw. [Gitlab](https://about.gitlab.com/),
+[Bitbucket](https://de.atlassian.com/software/bitbucket) etc benötigt.
+
+### Service
+
 Die Implementierung stammt vollständig von Spring Cloud Config. In diesem 
 Projekt findet nur die Konfiguration statt.
 
+In diesem Projekt muss natürlich auch der Zugriff auf das Git-Repository 
+mittels SSH konfiguriert werden. Dazu wird ein hier entsprechendes 
+Public-Private-Key-Paar hinterlegt. Der Public-Key muss im Git-Server in der
+`authorized_keys` eingetragen sein.
+
 ## Test
+
+### Git-Server
+
+Der Git-Server selbst ist gut dokumentiert uns sollte selbständig getestet 
+werden. Der kann dann natürlich auch für andere Zwecke verwendet werden.
 
 ### Configuration Server
 
@@ -19,8 +50,7 @@ Die Service-Gateway läuft unter
 `http://localhost:8280/<spring.application.name>/<profile>[/<label>]`. Pfade 
 zu den Services:
 
-* Hello-World: `http://localhost:8280/hello-world/local[/master]`
-* TODO ... 
+* Hello-World: `http://localhost:8280/hello-world/docker[/master]`
 
 ### Configuration Client
 

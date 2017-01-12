@@ -42,15 +42,15 @@ in einem Docker-Container gestartet werden. Dazu sind folgende Schritte nötig:
 
 Annahme: Es sind keine Docker-Images mit den Services gebaut.
 
-1. Baue und starte alle Docker-Images mit `docker-compose up -d`
-2. Nach der Demo wird können die Docker-Images mit `docker-compose stop`
-3. Falls neue Docker-Images neu gebaut und gestartet werden sollen, müssen
-   die alten Images entfernt werden.
+1. Baue alle Docker-Images mit `docker-compose build` 
+2. Starte alle Docker-Images mit `docker-compose up -d`
+3. Nach der Demo wird können die Docker-Images mit `docker-compose stop`
+4. Alte Images können mit den folgenden Kommandos entfernt werden:
 
 ````
 sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
 sudo docker images -a | grep "^<none>" | awk "{print \$3}" | xargs sudo docker rmi -f
-sudo docker rmi microserviceeureka_primes microserviceeureka_hello-world microserviceeureka_monitor microserviceeureka_gateway microserviceeureka_service-registry
+sudo docker rmi microserviceeureka_primes microserviceeureka_hello-world microserviceeureka_monitor microserviceeureka_gateway microserviceeureka_configuration microserviceeureka_service-registry
 ````
 
 ## Referenzen
@@ -77,3 +77,7 @@ sudo docker rmi microserviceeureka_primes microserviceeureka_hello-world microse
 2. [Best practices for writing Dockerfiles](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/)
 3. [Compose file reference](https://docs.docker.com/compose/compose-file/)
 4. [A maven plugin for Docker ](https://github.com/spotify/docker-maven-plugin)
+
+### Sonstiges
+1. [git-ssh-server](https://github.com/unixtastic/git-ssh-server)
+2. [wait-for-it](https://github.com/jdufner/wait-for-it)
