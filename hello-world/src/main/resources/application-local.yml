@@ -3,12 +3,9 @@
 # Wir wollen mehrere Services gleichzeitig laufen lassen. Das geht nur, wenn
 # sie auf unterschiedlichen Ports lauschen. Wir starten mal ein 9090, jeder
 # weitere Business-Microservice wird einfach um 100 erhöht.
-server.port=9090
+server:
+  port: 9090
 
-service-registry.server.hostname=localhost
-
-# Ususal Spring Boot Configuration
-#debug=true
-
-# IntelliJ support ANSI-Colors
-spring.output.ansi.enabled=ALWAYS
+service-registry:
+  server:
+    hostname: localhost

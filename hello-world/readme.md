@@ -14,6 +14,18 @@ Der Aufruf des Primes-Services erfolgt mittels JSON. Das Objekt zum
 deserialisieren ist in diesem Projekt implementiert, weil keine binäre 
 Abhängigkeit zum Projekt primes erwünscht ist.
 
+### Konfiguration
+
+Der Hello World-Service erhält nun seine Konfiguration vom Configuration-
+Server. Der Start von Hello World muss solange verzögert werden, bis der
+Configuration-Server up ist oder das Timeout abgelaufen ist. Das wird mit dem 
+Skript  [vishnubob/wait-for-it](https://github.com/vishnubob/wait-for-it)
+gemacht. Leider gibt es mit dem Skript ein Problem mit dem Timeout-Befehl. Ich
+habe auf [jdufner/wait-for-it](https://github.com/jdufner/wait-for-it) eine für
+[Alpine-Linux](https://alpinelinux.org/) korrigierte Version zur Verfügung 
+gestellt. BTW: Das Skript benötigt eine BASH, die muss auch noch in das  
+Docker-Image von Alpine-Linux eingebaut werden.
+
 ## Test
 
 Dieser Service kann einfach durch Aufruf der URL `http://<host>:<port>/`

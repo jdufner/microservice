@@ -25,6 +25,7 @@ public class PrimesResult {
 
   private long id;
   private List<Integer> primeNumbers;
+  private String strategy;
   private Long divisionCounter;
   private String hostname;
 
@@ -42,6 +43,14 @@ public class PrimesResult {
 
   public void setPrimeNumbers(final List<Integer> primeNumbers) {
     this.primeNumbers = primeNumbers;
+  }
+
+  public String getStrategy() {
+    return strategy;
+  }
+
+  public void setStrategy(final String strategy) {
+    this.strategy = strategy;
   }
 
   public Long getDivisionCounter() {

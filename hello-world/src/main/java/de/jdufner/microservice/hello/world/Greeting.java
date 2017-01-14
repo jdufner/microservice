@@ -27,6 +27,7 @@ public class Greeting {
   private String message;
   private List<Integer> primes;
   private String hostname;
+  private String configurationValue;
 
   public long getId() {
     return id;
@@ -58,5 +59,13 @@ public class Greeting {
 
   public String getHostname() {
     return hostname;
+  }
+
+  public String getConfigurationValue() {
+    return configurationValue;
+  }
+
+  public void setConfigurationValue(final String configurationValue) {
+    this.configurationValue = configurationValue;
   }
 }

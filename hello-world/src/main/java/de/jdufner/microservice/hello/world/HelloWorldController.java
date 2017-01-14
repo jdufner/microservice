@@ -16,9 +16,13 @@
 package de.jdufner.microservice.hello.world;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,9 +40,12 @@ import java.util.stream.Collectors;
  * @author Jürgen Dufner
  * @since 0.0.1
  */
+@RefreshScope
 @RestController
 @EnableAutoConfiguration
 public class HelloWorldController {
+
+  private static final Logger LOG = LoggerFactory.getLogger(HelloWorldController.class);
 
   private final AtomicLong counter = new AtomicLong();
   
@@ -47,6 +54,12 @@ public class HelloWorldController {
 
   private RestTemplate restTemplate = new RestTemplate();
   private String PRIMES = "primes";
+
+  @Value("${arbitrary.configuration.value}")
+  private String configurationValue = "Hardcoded Value";
+
+  @Value("${x.y.z}")
+  private String yast;
 
   @RequestMapping(path = "/")
   @HystrixCommand(fallbackMethod = "helloWorldFallback")
@@ -59,11 +72,13 @@ public class HelloWorldController {
   }
 
   public Greeting doHelloWorld(String name, final List<Integer> primes) {
+    LOG.error("What is the configuration value? {}", configurationValue);
     Greeting greeting = new Greeting();
     greeting.setId(counter.incrementAndGet());
     greeting.setMessage("Hello " + name + "!");
     greeting.setPrimes(primes);
     greeting.setHostname(getHostname());
+    greeting.setConfigurationValue(configurationValue + " " + yast);
     return greeting;
   }
 
