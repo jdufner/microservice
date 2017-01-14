@@ -2,7 +2,7 @@ FROM openjdk:8-alpine
 ADD src/main/resources/ssh/id_rsa /root/.ssh/id_rsa
 ADD src/main/resources/ssh/id_rsa.pub /root/.ssh/id_rsa.pub
 ADD src/main/resources/ssh/config /root/.ssh/config
-ADD src/main/resources/ssh/known_hosts /root/.ssh/known_hosts
+#ADD src/main/resources/ssh/known_hosts /root/.ssh/known_hosts
 ADD target/configuration-0.0.1-SNAPSHOT.jar app.jar
 RUN sh -c 'touch /app.jar'
 ENV JAVA_OPTS=""
