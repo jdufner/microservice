@@ -1,0 +1,41 @@
+---
+eureka:
+  client:
+    serviceUrl:
+      # Service-URL des Eureka
+      defaultZone: http://${service-registry.server.hostname}:8761/eureka/
+    instance:
+      # Eureka soll uns in URLs die IP-Adresse, nicht den Hostnamen, liefern.
+      preferIpAddress: true
+    # Default 40
+    initial-instance-info-replication-interval-seconds: 10
+    # Default 30
+    instance-info-replication-interval-seconds: 5
+    # Default 30
+    registry-fetch-interval-seconds: 5
+  instance:
+    # Port unterschiedlich je nach Profil
+    nonSecurePort: ${server.port}
+    # Default 30 Sends every {} seconds a heartbeat
+    lease-renewal-interval-in-seconds: 5
+    # Default 90 When no heartbeat received, after {} seconds the service will be removed.
+    lease-expiration-duration-in-seconds: 15
+    # Default /info
+    status-page-url-path: /health
+
+---
+# Refresh-Interval is broken
+# https://github.com/spring-cloud/spring-cloud-netflix/issues/1304
+hello-world:
+  ribbon:
+    # Default 30
+    server-list-refresh-interval: 10
+
+---
+arbitrary:
+  configuration:
+    value: Value from general Hello-World configuration without profile
+
+x:
+  y:
+    z: x

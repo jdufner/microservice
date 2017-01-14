@@ -54,6 +54,7 @@ public class PrimesController {
   public PrimesResult primes(@RequestParam(value = "maxPrimeNumber", defaultValue = "1000000") int maxPrimeNumber) {
     PrimesResult primesResult = getPrimesComputerByStrategy().primes(maxPrimeNumber);
     primesResult.setId(counter.incrementAndGet());
+    primesResult.setStrategy(strategy);
     primesResult.setHostname(getHostname());
     return primesResult;
   }

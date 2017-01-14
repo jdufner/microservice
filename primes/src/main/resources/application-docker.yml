@@ -5,6 +5,18 @@
 # Wir wollen mehrere Services gleichzeitig laufen lassen, aber jeder Service
 # in seinem eigenen Container. Die Ports sind daher in allen Containern gleich
 # und werden in Dockerfile oder docker-compose.yml konfiguriert.
-server.port=8080
+server:
+  port: 8080
 
-service-registry.server.hostname=service-registry
+service-registry:
+  server:
+    hostname: service-registry
+
+# Ususal Spring Boot Configuration
+#debug: true
+
+# IntelliJ support ANSI-Colors
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
