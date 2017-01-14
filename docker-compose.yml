@@ -35,6 +35,8 @@ services:
     links:
       - service-registry
       - git-ssh-server
+    volumes:
+      - /tmp/log/configuration:/log
   hello-world:
     build: hello-world/
     links:
