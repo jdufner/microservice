@@ -17,6 +17,7 @@
     <module>service-registry</module>
     <module>monitor</module>
     <module>gateway</module>
+    <module>configuration</module>
   </modules>
 
 </project>
