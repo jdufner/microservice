@@ -20,4 +20,4 @@ service-registry:
 spring:
   output:
     ansi:
-      enabled: ALWAYS
+      enabled: NEVER
