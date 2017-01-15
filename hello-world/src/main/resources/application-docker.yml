@@ -11,3 +11,13 @@ server:
 service-registry:
   server:
     hostname: service-registry
+
+# Ususal Spring Boot Configuration
+#debug=true
+
+# IntelliJ support ANSI-Colors
+# Supported values ALWAYS, DETECT, NEVER
+spring:
+  output:
+    ansi:
+      enabled: NEVER
