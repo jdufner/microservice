@@ -52,15 +52,32 @@ services:
       - service-registry
     volumes:
       - /tmp/log/monitor:/log
+  git-ssh-server:
+    image: unixtastic/git-ssh-server
+    ports:
+      - "2222:22"
+    volumes:
+      - "/tmp/git:/git"
+  configuration:
+    build: configuration/
+    ports:
+      - "8280:8080"
+    links:
+      - service-registry
+      - git-ssh-server
+    volumes:
+      - /tmp/log/configuration:/log
   hello-world:
     build: hello-world/
     links:
       - service-registry
+      - configuration
     volumes:
       - /tmp/log/hello-world:/log
   primes:
     build: primes/
     links:
       - service-registry
+      - configuration
     volumes:
       - /tmp/log/primes:/log
