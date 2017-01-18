@@ -25,18 +25,6 @@ Auskunft zu geben.
 
 ## Ausführung der Demo
 
-### Maven
-
-Voraussetzung: Der User, der den Maven-Build ausführt, muss `docker` ausführen
-können. Dazu muss der User Mitglied der Gruppe docker sein: 
-`sudo usermod -aG docker $USER`, ggf. muss sich der User danach noch aus- und
-einloggen.
-
-Mit `mvn package docker:build` kann das Image gebaut werden. Das Image ist nun
-als lokales Image verfügbar. Das kann mit `docker images -a` überprüft werden. 
-
-### Docker
-
 Die Services können nun nicht mehr aus der IDE gestaret werden, sondern müssen
 in einem Docker-Container gestartet werden. Dazu sind folgende Schritte nötig:
 
@@ -90,6 +78,15 @@ sysctl -w vm.max_map_count=262144
 Or you can set it permanently by modifying `vm.max_map_count` setting in your 
 `/etc/sysctl.conf`.
 
+### Distributed Log Correlation with Spring Cloud Sleuth
+As microservices tend to call each other, the ability correlate log entries across several 
+service instances becomes very important.
+When looking at the logfile output of 'gateway", 'hello-world' and 'primes' you will see, 
+that tracing information is being added to some log entries. These can also be seen in Kibana.
+These are being added by Spring Cloud Sleuth.
+
+You will also see, that the "traceId" stays the same while gateway calls hello-world which 
+in turn calls primes. This is the so called tracingId that is being transferred across service calls by Sleuth using HTTP Headers. This makes correlation of entries accross services easy.
 
 
 ## Referenzen
@@ -107,14 +104,14 @@ Or you can set it permanently by modifying `vm.max_map_count` setting in your
 ### Spring Dokumentationen
 1. [Spring Framework Reference Documentation](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/) [(single page)](https://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/)
 2. [Spring Boot Reference Guide](https://docs.spring.io/spring-boot/docs/current/reference/html/) [(single page)](https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/)
-3. [Spring Cloud](http://projects.spring.io/spring-cloud/spring-cloud.html)
-4. [Spring CLoud Netflix](http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html)
+3. [Spring Cloud](https://projects.spring.io/spring-cloud/spring-cloud.html)
+4. [Spring Cloud Netflix](https://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html)
+5. [Spring Cloud Sleuth](https://cloud.spring.io/spring-cloud-sleuth/index.html)
 
 ### Docker
 1. [Dockerfile reference](https://docs.docker.com/engine/reference/builder/)
 2. [Best practices for writing Dockerfiles](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/)
 3. [Compose file reference](https://docs.docker.com/compose/compose-file/)
-4. [A maven plugin for Docker ](https://github.com/spotify/docker-maven-plugin)
 
 ### ELK-Stack
 1. [Docker ELK stack](https://github.com/deviantony/docker-elk)
