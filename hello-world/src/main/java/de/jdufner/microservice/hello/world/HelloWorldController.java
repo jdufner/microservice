@@ -15,26 +15,20 @@
  */
 package de.jdufner.microservice.hello.world;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import java.net.InetAddress;
-import java.net.URI;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 /**
  * @author Jürgen Dufner
@@ -50,25 +44,14 @@ public class HelloWorldController {
   private final AtomicLong counter = new AtomicLong();
   
   @Autowired
-  private LoadBalancerClient loadBalancerClient;
-
-  @Autowired
-  private RestTemplate restTemplate;
-
-  private String PRIMES = "primes";
+  private PrimesServiceProxy primesServiceProxy;
 
   @Value("${arbitrary.configuration.value}")
   private String configurationValue = "Hardcoded Value";
 
   @RequestMapping(path = "/")
-  @HystrixCommand(fallbackMethod = "helloWorldFallback")
   public Greeting helloWorld(@RequestParam(value = "name", defaultValue = "World") String name) throws Exception {
-    return doHelloWorld(name, getPrimesSmallerThan(1000));
-  }
-
-  public Greeting helloWorldFallback(String name) {
-    LOG.warn("Using fallback!");
-    return doHelloWorld(name, getPrimesUpTo100());
+    return doHelloWorld(name, primesServiceProxy.getPrimesSmallerThan(1000));
   }
 
   public Greeting doHelloWorld(String name, final List<Integer> primes) {
@@ -80,19 +63,6 @@ public class HelloWorldController {
     greeting.setHostname(getHostname());
     greeting.setConfigurationValue(configurationValue);
     return greeting;
-  }
-
-  private List<Integer> getPrimesSmallerThan(int limit) throws Exception {
-    URI uri = loadBalancerClient.choose(PRIMES).getUri();
-    LOG.info("Getting Primes smaller than {}", limit);
-    PrimeNumbers primes = restTemplate.getForObject(uri, PrimeNumbers.class);
-    List<Integer> limitedPrimes = primes.getPrimeNumbers().stream().filter(i -> i < limit).collect(Collectors.toList());
-    primes.setPrimeNumbers(limitedPrimes);
-    return limitedPrimes;
-  }
-
-  private List<Integer> getPrimesUpTo100() {
-    return Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97);
   }
 
   private String getHostname() {

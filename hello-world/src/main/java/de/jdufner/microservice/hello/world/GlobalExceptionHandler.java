@@ -20,8 +20,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author Jürgen Dufner
@@ -33,11 +35,10 @@ public class GlobalExceptionHandler {
 
   private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-  @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-  @ExceptionHandler(value = Exception.class)
-  public String handleException(Exception e) {
+  @ExceptionHandler({Exception.class})
+  public void handleException(Exception e, HttpServletResponse response) throws IOException {
     LOG.error("Unbehandelter technischer Fehler: ", e);
-    return "Technischer Fehler!";
+    response.sendError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
   }
 
 }
