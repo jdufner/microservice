@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Kontoverwaltung: Erzeuge Konto</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+  <form action="#" th:action="@{/create}" th:object="${konto}" method="post">
+    <p>Inhaber: <input type="text" th:field="*{inhaber}"/></p>
+    <p><input type="submit" value="Erzeuge"/><input type="reset" value="Abbrechen"/></p>
+  </form>
+</body>
+</html>
